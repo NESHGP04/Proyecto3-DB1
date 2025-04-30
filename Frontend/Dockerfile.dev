@@ -1,0 +1,16 @@
+# Dockerfile.dev (Desarrollo)
+FROM node:18-alpine
+WORKDIR /app
+
+# Copia las dependencias
+COPY package*.json ./
+RUN npm install
+
+# Copia el resto del código
+COPY . .
+
+# Exponemos el puerto 5173 (puerto por defecto de Vite)
+EXPOSE 5173
+
+# Para que Vite escuche en todas las interfaces del contenedor, se usa la flag --host
+CMD ["npm", "run", "dev", "--", "--host"]
