@@ -1,0 +1,15 @@
+.sub-nav {
+    display: flex;
+    margin-top: 8%;
+    justify-content: space-around;
+    background-color: #64dee0;
+    padding: 15px 0;
+  }
+  
+  .sub-nav-item {
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #2e3b7c;
+    font-weight: 500;  
+  }

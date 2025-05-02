@@ -1,10 +1,13 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+// src/main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import "./styles/index.css";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
+// Se obtiene el elemento raíz definido en el index.html y se renderiza la aplicación.
+// React.StrictMode es opcional, ayuda a detectar problemas potenciales.
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
     <App />
-  </StrictMode>,
-)
+  </React.StrictMode>
+);
