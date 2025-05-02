@@ -1,7 +1,10 @@
 import React from "react";
 import "../../styles/clientDetail.css";
+import { useNavigate } from "react-router-dom";
 
 const Izquierda = () => {
+  const navigate = useNavigate();
+
     // Cambiar con datos reales
   const employeeData = {
     name: "Angel Mendoza",
@@ -27,6 +30,14 @@ const Izquierda = () => {
         ) : (
           <div className="employee-photo-placeholder"></div>
         )}
+      </div>
+      <div className="button-container">
+            <button
+            className="modify-button"
+            onClick={() => navigate("/add-citas")}
+            >
+              Agregar Cita
+            </button>
       </div>
     </div>
   );

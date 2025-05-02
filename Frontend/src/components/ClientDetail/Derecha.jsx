@@ -6,14 +6,14 @@ const Derecha = () => {
 
     const employeeData = {
         name: "Angel Mendoza",
-        nit: "3460854-7",
         birthDate: "11/11/1978",
-        position: "Gerente de ventas",
-        dpi: "3008366610101",
-        salary: "Q 8,000.00",
-        igssAffiliation: "56789",
-        baseHours: "9 horas",
-        photo: null
+        dpi: "3614874520101",
+        direccion: "zona 10",
+        telefono: "56183765",
+        photo: null,
+        fecha: "07/05/25",
+        hora: "13:00",
+        doctor: "Dr. Alejandro Pérez"
       };
     
   return (
@@ -25,44 +25,45 @@ const Derecha = () => {
             </div>
             
             <div className="info-field">
-              <div className="field-label">NIT</div>
-              <div className="field-value golden-text">{employeeData.nit}</div>
+              <div className="field-label">Fecha de Nacimiento</div>
+              <div className="field-value golden-text">{employeeData.birthDate}</div>
             </div>
           </div>
           
           <div className="info-row">
             <div className="info-field">
-              <div className="field-label">Fecha de nacimiento</div>
-              <div className="field-value golden-text">{employeeData.birthDate}</div>
+              <div className="field-label">Dirección</div>
+              <div className="field-value golden-text">{employeeData.direccion}</div>
             </div>
             
             <div className="info-field">
-              <div className="field-label">Departamento y puesto</div>
-              <div className="field-value golden-text">{employeeData.position}</div>
+              <div className="field-label">Teléfono</div>
+              <div className="field-value golden-text">{employeeData.telefono}</div>
             </div>
           </div>
-          
+
           <div className="info-row">
             <div className="info-field">
               <div className="field-label">DPI</div>
               <div className="field-value golden-text">{employeeData.dpi}</div>
             </div>
-            
+
             <div className="info-field">
-              <div className="field-label">Salario base</div>
-              <div className="field-value golden-text">{employeeData.salary}</div>
+              <div className="field-label">Doctor Encargado</div>
+              <div className="field-value golden-text">{employeeData.doctor}</div>
             </div>
+
           </div>
           
           <div className="info-row">
             <div className="info-field">
-              <div className="field-label">Afiliación IGSS</div>
-              <div className="field-value golden-text">{employeeData.igssAffiliation}</div>
+              <div className="field-label">Próxima cita</div>
+              <div className="field-value golden-text">{employeeData.fecha}</div>
             </div>
             
             <div className="info-field">
-              <div className="field-label">Horas base</div>
-              <div className="field-value golden-text">{employeeData.baseHours}</div>
+              <div className="field-label">Hora</div>
+              <div className="field-value golden-text">{employeeData.hora}</div>
             </div>
           </div>
     </div>

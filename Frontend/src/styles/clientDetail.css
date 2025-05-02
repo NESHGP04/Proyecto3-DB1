@@ -118,3 +118,30 @@
       margin-bottom: 20px;
     }
   }
+
+  /* Botones */
+  .modify-button {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: #64dee0;
+    color: #2e3b7c;
+  }
+  
+  .modify-button:hover{
+    transform: scale(1.05);
+  }
+
+  .button-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10%;
+  }

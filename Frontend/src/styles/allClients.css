@@ -121,18 +121,18 @@
   
   .button-agregar button {
     background-color: #64dee0;
-    color: white;
+    color: #2e3b7c;
     padding: 12px 50px;
-    border-radius: 12px;
+    border-radius: 30px;
     border: none;
     cursor: pointer;
     font-size: 16px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s;
   }
   
   .button-agregar button:hover {
-    background-color: #307071;;
-    color: white;
+    transform: scale(1.05);
   }
   
   /* SearchBar */

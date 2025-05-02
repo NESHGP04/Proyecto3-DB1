@@ -21,16 +21,10 @@ const Table = () => {
     }
     showData()
 
-    //EJ Empleados
+    //EJ Pacientes
     const empleados = [
-            { id: '1', nombre: 'Ana López', puesto: 'Desarrolladora', departamento: 'Tecnología', imagen: foto },
-            { id: '2', nombre: 'Ana López', puesto: 'Desarrolladora', departamento: 'Tecnología', imagen: foto },
-            { id: '3', nombre: 'Ana López', puesto: 'Desarrolladora', departamento: 'Tecnología', imagen: foto },
-            { id: '2', nombre: 'Ana López', puesto: 'Desarrolladora', departamento: 'Tecnología', imagen: foto },
-            { id: '2', nombre: 'Ana López', puesto: 'Desarrolladora', departamento: 'Tecnología', imagen: foto },
-            { id: '2', nombre: 'Ana López', puesto: 'Desarrolladora', departamento: 'Tecnología', imagen: foto },
-            { id: '2', nombre: 'Ana López', puesto: 'Desarrolladora', departamento: 'Tecnología', imagen: foto },
-            // más empleados...
+            { id: '1', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            // más pacientes...
             //cambiarlo con datos DB
     ];
 
@@ -58,8 +52,8 @@ const Table = () => {
                         <th>Foto</th>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Puesto</th>
-                        <th>Departamento</th>
+                        <th>Cita</th>
+                        <th>Doctor</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,8 +64,8 @@ const Table = () => {
                         </td>
                         <td>{empleado.id}</td>
                         <td>{empleado.nombre}</td>
-                        <td>{empleado.puesto}</td>
-                        <td>{empleado.departamento}</td>
+                        <td>{empleado.cita}</td>
+                        <td>{empleado.doctor}</td>
                     </tr>
                    ))}
                 </tbody>

@@ -16,7 +16,7 @@ body, html {
     background-color: rgba(99, 103, 183, 0.8); /* Azul semitransparente */
     color: white;
     padding: 5vw;
-    margin-top: 15%;
+    margin-top: 10%;
     border-radius: 12px;
     width: 45%;
     max-width: 300px;
@@ -57,16 +57,16 @@ body, html {
 
   .button-register button {
     background-color: #64dee0;
-    color: white;
-    border: 2px solid white;
-    padding: 7px;
-    border-radius: 12px;
+    color: #2e3b7c;
+    padding: 15px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
   }
   
   .button-register button-register:hover {
-    background-color: #d89d00;
     transform: scale(1.05);
   }
 
