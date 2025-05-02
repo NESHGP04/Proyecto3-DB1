@@ -15,7 +15,8 @@ body {
 
 /* Fondo edificios */
 .background {
-  background-image: url('../assets/home.jpeg');
+  /* background-image: url('../assets/home.jpeg'); */
+  background-color: #8baeb2;
   background-size: cover;
   background-position: center;
   height: 100vh;
