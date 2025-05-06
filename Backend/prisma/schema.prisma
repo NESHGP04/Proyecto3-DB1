@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model auditoria_citas {
+  id      Int       @id @default(autoincrement())
+  id_cita Int?
+  accion  String?
+  fecha   DateTime? @default(now()) @db.Timestamp(6)
+  citas   citas?    @relation(fields: [id_cita], references: [id_cita], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model auditoria_consultas {
+  id          Int        @id @default(autoincrement())
+  id_consulta Int?
+  accion      String?
+  fecha       DateTime?  @default(now()) @db.Timestamp(6)
+  consultas   consultas? @relation(fields: [id_consulta], references: [id_consulta], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model auditoria_medicos {
+  id        Int       @id @default(autoincrement())
+  id_medico Int?
+  accion    String?
+  fecha     DateTime? @default(now()) @db.Timestamp(6)
+  medicos   medicos?  @relation(fields: [id_medico], references: [id_medico], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model auditoria_pacientes {
+  id          Int        @id @default(autoincrement())
+  id_paciente Int?
+  accion      String?
+  fecha       DateTime?  @default(now()) @db.Timestamp(6)
+  pacientes   pacientes? @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model bitacora {
+  id_bitacora    Int       @id @default(autoincrement())
+  fecha_hora     DateTime? @db.Timestamp(6)
+  id_usuario     Int?
+  tabla_afectada String?   @db.VarChar(100)
+  operacion      String?   @db.VarChar(100)
+  usuarios       usuarios? @relation(fields: [id_usuario], references: [id_usuarios], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model citas {
+  id_cita         Int               @id @default(autoincrement())
+  id_medico       Int?
+  id_paciente     Int?
+  fecha           DateTime?         @db.Timestamp(6)
+  auditoria_citas auditoria_citas[]
+  medicos         medicos?          @relation(fields: [id_medico], references: [id_medico], onDelete: NoAction, onUpdate: NoAction)
+  pacientes       pacientes?        @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction)
+  consultas       consultas[]
+}
+
+model clinica {
+  id_clinica Int         @id @default(autoincrement())
+  nombre     String?     @db.VarChar(100)
+  direccion  String?
+  pacientes  pacientes[]
+  usuarios   usuarios[]
+}
+
+model consultas {
+  id_consulta         Int                   @id @default(autoincrement())
+  id_cita             Int?
+  diagnostico         String?
+  auditoria_consultas auditoria_consultas[]
+  citas               citas?                @relation(fields: [id_cita], references: [id_cita], onDelete: NoAction, onUpdate: NoAction)
+  tratamiento_maestro tratamiento_maestro[]
+}
+
+model factura_detalle {
+  id_factura_detalle Int              @id @default(autoincrement())
+  id_factura_maestro Int?
+  descripcion        String?          @db.VarChar(255)
+  cantidad           Int?
+  precio_unitario    Decimal?         @db.Decimal(10, 2)
+  factura_maestro    factura_maestro? @relation(fields: [id_factura_maestro], references: [id_factura_maestro], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model factura_maestro {
+  id_factura_maestro Int               @id @default(autoincrement())
+  id_paciente        Int?
+  fecha_emision      DateTime?         @db.Date
+  total              Decimal?          @db.Decimal(10, 2)
+  factura_detalle    factura_detalle[]
+  pacientes          pacientes?        @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model medicos {
+  id_medico         Int                 @id @default(autoincrement())
+  nombre            String?             @db.VarChar(100)
+  especialidad      String?             @db.VarChar(100)
+  telefono          String?             @db.VarChar(100)
+  auditoria_medicos auditoria_medicos[]
+  citas             citas[]
+}
+
+model pacientes {
+  id_paciente         Int                   @id @default(autoincrement())
+  nombre              String?               @db.VarChar(100)
+  fecha_nacimiento    DateTime?             @db.Date
+  direccion           String?
+  telefono            String?               @db.VarChar(100)
+  id_clinica          Int
+  auditoria_pacientes auditoria_pacientes[]
+  citas               citas[]
+  factura_maestro     factura_maestro[]
+  clinica             clinica               @relation(fields: [id_clinica], references: [id_clinica], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tratamiento_detalle {
+  id_tratamiento_detalle Int                  @id @default(autoincrement())
+  id_tratamiento_maestro Int?
+  medicamento            String?              @db.VarChar(100)
+  dosis                  String?              @db.VarChar(50)
+  frecuencia             String?              @db.VarChar(50)
+  tratamiento_maestro    tratamiento_maestro? @relation(fields: [id_tratamiento_maestro], references: [id_tratamiento_maestro], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tratamiento_maestro {
+  id_tratamiento_maestro Int                   @id @default(autoincrement())
+  id_consulta            Int?
+  fecha_inicio           DateTime?             @db.Date
+  fecha_fin              DateTime?             @db.Date
+  tratamiento_detalle    tratamiento_detalle[]
+  consultas              consultas?            @relation(fields: [id_consulta], references: [id_consulta], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model usuarios {
+  id_usuarios    Int        @id @default(autoincrement())
+  nombre_usuario String?    @db.VarChar(100)
+  clave_hash     String?    @db.VarChar(255)
+  id_clinica     Int?
+  bitacora       bitacora[]
+  clinica        clinica?   @relation(fields: [id_clinica], references: [id_clinica], onDelete: NoAction, onUpdate: NoAction)
+}
