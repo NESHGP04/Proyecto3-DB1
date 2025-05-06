@@ -1,0 +1,100 @@
+/* CSS de AddEmployee*/
+
+:root {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  line-height: 0.5;
+  font-weight: 250;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+  /* Cuadro azul */
+  .overlay-box-agregar {
+    background-color: rgba(99, 103, 183, 0.8); /* Azul semitransparente */
+    color: white;
+    padding: 4vw;
+    margin-top: 10%;
+    border-radius: 12px;
+    width: 45%;
+    max-width: 300px;
+    max-height: 500px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  
+    overflow-y: auto; 
+    position: absolute; 
+  }
+
+  .form {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    justify-content: center;
+  }
+  
+  .form input {
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    outline: none;
+  } 
+
+  /* Botón */
+  .button-register {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px; 
+    margin-right: 0px;
+  }
+
+  .button-register button {
+    background-color: #64dee0;
+    color: #2e3b7c;
+    padding: 15px;
+    width: 100%;
+    border-radius: 30px;
+    border: none;
+    font-size: 16px; 
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .button-register button-register:hover {
+    transform: scale(1.05);
+  }
+
+  /* Select */
+  .select-action-forms {
+    padding: 10px;
+    font-size: clamp(1rem, 0vw, 1rem);
+    border-radius: 12px;
+    background-color: white;
+    color: gray;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .select-action-forms:focus {
+    outline: none;
+    border-color: #243884;
+  }
+
+  .label-forms {
+    font-size: clamp(1rem, 1.5vw, 1.5rem); 
+    margin-bottom: 5px; 
+    display: block;
+    text-align: left;
+    margin-top: 5%;
+  }
+

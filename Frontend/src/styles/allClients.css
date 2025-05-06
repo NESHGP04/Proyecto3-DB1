@@ -1,0 +1,155 @@
+/* CSS de AllClients */
+
+/* Barra Menú */
+.employee-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', Arial, sans-serif;
+  }
+  
+  .main-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(130, 48, 128, 0.8);
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  /* Ajuste del nav si es necesario */
+  .main-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px 0;
+  }
+  
+  .nav-item {
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+  }
+  
+    .nav-item::after {
+        content: '';
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        bottom: -3px;
+        left: 0;
+        background-color: white;
+        transition: width 0.3s ease-in-out;
+    }
+  
+  .nav-item:hover::after {
+    width: 100%;
+  }
+  
+  .logo-container {
+    background-color: white;
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .company-logo {
+    height: 40px;
+    max-width: 150px;
+  }
+  
+  /* TABLE Empleado */
+  .table-container {
+    width: 90%;
+    margin: 100px auto 50px auto; /* espacio para header y botón */
+    overflow-x: auto;
+    border-radius: 12px;
+    max-height: calc(100vh - 180px);
+  }
+  
+  .employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .employee-table th,
+  .employee-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #243884;
+  }
+  
+  .employee-table th {
+    background-color: #64dee0;
+    color: #2e3b7c;
+    font-weight: bold;
+  }
+  
+  .employee-row:hover {
+    background-color: #e0eaff;
+    cursor: pointer;
+  }
+  
+  .employee-table img.empleado-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #243884;
+  }
+  
+  /* Botones */
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px -800px;
+  }  
+
+  .button-agregar,
+  .button-report {
+    margin: 0;
+  }
+  
+  .button-agregar button,
+  .button-report button {
+    background-color: #64dee0;
+    color: #2e3b7c;
+    padding: 12px 50px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+    width: auto;
+  }
+
+  .button-agregar button:hover,
+  .button-report button:hover {
+    transform: scale(1.05);
+  }
+  
+  /* SearchBar */
+  .searchbar{
+      margin: 10px 0;
+      padding: 10px;
+      border: 2px solid #243884;
+      border-radius: 12px;
+      outline: none;
+  }
