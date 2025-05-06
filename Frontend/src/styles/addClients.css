@@ -15,7 +15,7 @@ body, html {
   .overlay-box-agregar {
     background-color: rgba(99, 103, 183, 0.8); /* Azul semitransparente */
     color: white;
-    padding: 5vw;
+    padding: 4vw;
     margin-top: 10%;
     border-radius: 12px;
     width: 45%;
@@ -51,16 +51,18 @@ body, html {
     position: relative;
     display: flex;
     justify-content: center;
-    margin-top: 70px; 
-    margin-right: 60px;
+    margin-top: 40px; 
+    margin-right: 0px;
   }
 
   .button-register button {
     background-color: #64dee0;
     color: #2e3b7c;
     padding: 15px;
+    width: 100%;
     border-radius: 30px;
-    font-size: 16px;
+    border: none;
+    font-size: 16px; 
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;

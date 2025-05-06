@@ -111,15 +111,23 @@
     border: 2px solid #243884;
   }
   
-  /* Botón */
-  button-agregar {
+  /* Botones */
+  .button-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    margin: 300px 0 55px 0;
+    align-items: center;
+    gap: 10px;
+    margin: 10px -800px;
+  }  
+
+  .button-agregar,
+  .button-report {
+    margin: 0;
   }
   
-  .button-agregar button {
+  .button-agregar button,
+  .button-report button {
     background-color: #64dee0;
     color: #2e3b7c;
     padding: 12px 50px;
@@ -129,9 +137,11 @@
     font-size: 16px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     transition: all 0.3s;
+    width: auto;
   }
-  
-  .button-agregar button:hover {
+
+  .button-agregar button:hover,
+  .button-report button:hover {
     transform: scale(1.05);
   }
   

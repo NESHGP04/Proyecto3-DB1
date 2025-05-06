@@ -12,7 +12,7 @@ const ClientDetail = () => {
   return (
     <div className="employee-page">
       {/* Barra de navegación superior */}
-      <Navbar />
+      <Navbar /> 
 
       {/* Barra de subnavegación */}
       <SubMenu />

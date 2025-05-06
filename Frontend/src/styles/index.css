@@ -15,8 +15,7 @@ body {
 
 /* Fondo edificios */
 .background {
-  /* background-image: url('../assets/home.jpeg'); */
-  background-color: #8baeb2;
+  background-image: url('../assets/backmed.jpg');
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -74,7 +73,7 @@ body {
 
 /* Botón */
 input[type="button"],
-button {
+.button-home {
   position: absolute;
   bottom: 5%;
   right: 5%;

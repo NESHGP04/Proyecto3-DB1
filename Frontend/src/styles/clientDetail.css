@@ -39,7 +39,7 @@
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 40px;
-    margin-left: 15%;
+    margin-left: 20%;
   }
   
   .employee-photo {
@@ -123,6 +123,7 @@
   .modify-button {
     width: 100%;
     padding: 15px;
+    width: 90%;
     margin-bottom: 20px;
     border: none;
     border-radius: 30px;

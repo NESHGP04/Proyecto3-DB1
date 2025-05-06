@@ -38,6 +38,10 @@ const Izquierda = () => {
             >
               Agregar Cita
             </button>
+
+            <button className="modify-button">
+              Reporte Paciente
+            </button>
       </div>
     </div>
   );

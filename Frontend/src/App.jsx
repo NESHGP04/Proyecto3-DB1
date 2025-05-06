@@ -1,8 +1,9 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './routes/Home';
 import AllClients from './routes/AllClients';
 import AddClients from './routes/AddClients';
 import ClientDetail from './routes/ClientDetail';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Reports from './routes/Reports';
 import AddCitas from './routes/AddCita';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/add-clients" element={<AddClients />} />  
           <Route path="/client-detail" element={<ClientDetail />} />  
           <Route path="/add-citas" element={<AddCitas />} />  
+          <Route path="/reports" element={<Reports />} />  
 
           {/* Catch‑all */}
           {/* <Route path="*" element={<Navigate to="/" />} /> */}

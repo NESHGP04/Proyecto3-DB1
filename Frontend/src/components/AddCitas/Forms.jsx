@@ -44,7 +44,7 @@ const Forms = () => {
             <button type="submit">Registrar</button>
         </div>
         
-      </form>
+      </form> 
     </div>
   );
 };

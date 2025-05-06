@@ -23,7 +23,15 @@ const Table = () => {
 
     //EJ Pacientes
     const empleados = [
-            { id: '1', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
+            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
             // más pacientes...
             //cambiarlo con datos DB
     ];
@@ -50,7 +58,7 @@ const Table = () => {
                 <thead>
                     <tr>
                         <th>Foto</th>
-                        <th>ID</th>
+                        <th>DPI</th>
                         <th>Nombre</th>
                         <th>Cita</th>
                         <th>Doctor</th>

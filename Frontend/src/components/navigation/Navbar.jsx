@@ -10,6 +10,7 @@ const Navbar = () => {
     <header className="main-header">
       <nav className="main-nav">
         <div className="nav-item" onClick={() => navigate("/all-clients")}>Listado Pacientes</div>
+        <div className="nav-item" onClick={() => navigate("/reports")}>Reportes</div>
         <div className="logo-container">
           <img src={logo} alt="Coremsa Logo" className="company-logo" />
         </div>
