@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum estado_citas {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+}
+
 model auditoria_citas {
   id      Int       @id @default(autoincrement())
   id_cita Int?
@@ -52,11 +58,15 @@ model citas {
   id_cita         Int               @id @default(autoincrement())
   id_medico       Int?
   id_paciente     Int?
+  id_clinica      Int?
   fecha           DateTime?         @db.Timestamp(6)
+  estado          estado_citas?
   auditoria_citas auditoria_citas[]
   medicos         medicos?          @relation(fields: [id_medico], references: [id_medico], onDelete: NoAction, onUpdate: NoAction)
   pacientes       pacientes?        @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction)
   consultas       consultas[]
+  factura_maestro factura_maestro[]
+  clinica         clinica?          @relation(fields: [id_clinica], references: [id_clinica], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model clinica {
@@ -65,6 +75,7 @@ model clinica {
   direccion  String?
   pacientes  pacientes[]
   usuarios   usuarios[]
+  citas      citas[]
 }
 
 model consultas {
@@ -88,10 +99,12 @@ model factura_detalle {
 model factura_maestro {
   id_factura_maestro Int               @id @default(autoincrement())
   id_paciente        Int?
+  id_cita            Int?
   fecha_emision      DateTime?         @db.Date
   total              Decimal?          @db.Decimal(10, 2)
   factura_detalle    factura_detalle[]
   pacientes          pacientes?        @relation(fields: [id_paciente], references: [id_paciente], onDelete: NoAction, onUpdate: NoAction)
+  citas              citas?            @relation(fields: [id_cita], references: [id_cita], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model medicos {

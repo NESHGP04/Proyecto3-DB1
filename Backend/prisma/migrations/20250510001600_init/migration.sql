@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "estado_citas" AS ENUM ('PENDIENTE', 'CONFIRMADA', 'CANCELADA');
+
 -- CreateTable
 CREATE TABLE "auditoria_citas" (
     "id" SERIAL NOT NULL,
@@ -54,7 +57,9 @@ CREATE TABLE "citas" (
     "id_cita" SERIAL NOT NULL,
     "id_medico" INTEGER,
     "id_paciente" INTEGER,
+    "id_clinica" INTEGER,
     "fecha" TIMESTAMP(6),
+    "estado" "estado_citas",
 
     CONSTRAINT "citas_pkey" PRIMARY KEY ("id_cita")
 );
@@ -92,6 +97,7 @@ CREATE TABLE "factura_detalle" (
 CREATE TABLE "factura_maestro" (
     "id_factura_maestro" SERIAL NOT NULL,
     "id_paciente" INTEGER,
+    "id_cita" INTEGER,
     "fecha_emision" DATE,
     "total" DECIMAL(10,2),
 
@@ -173,6 +179,9 @@ ALTER TABLE "citas" ADD CONSTRAINT "citas_id_medico_fkey" FOREIGN KEY ("id_medic
 ALTER TABLE "citas" ADD CONSTRAINT "citas_id_paciente_fkey" FOREIGN KEY ("id_paciente") REFERENCES "pacientes"("id_paciente") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
+ALTER TABLE "citas" ADD CONSTRAINT "citas_id_clinica_fkey" FOREIGN KEY ("id_clinica") REFERENCES "clinica"("id_clinica") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
 ALTER TABLE "consultas" ADD CONSTRAINT "consultas_id_cita_fkey" FOREIGN KEY ("id_cita") REFERENCES "citas"("id_cita") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
@@ -180,6 +189,9 @@ ALTER TABLE "factura_detalle" ADD CONSTRAINT "factura_detalle_id_factura_maestro
 
 -- AddForeignKey
 ALTER TABLE "factura_maestro" ADD CONSTRAINT "factura_maestro_id_paciente_fkey" FOREIGN KEY ("id_paciente") REFERENCES "pacientes"("id_paciente") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "factura_maestro" ADD CONSTRAINT "factura_maestro_id_cita_fkey" FOREIGN KEY ("id_cita") REFERENCES "citas"("id_cita") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "pacientes" ADD CONSTRAINT "pacientes_id_clinica_fkey" FOREIGN KEY ("id_clinica") REFERENCES "clinica"("id_clinica") ON DELETE NO ACTION ON UPDATE NO ACTION;
