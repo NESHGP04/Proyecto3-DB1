@@ -5,11 +5,10 @@ const Forms = () => {
   const [action, setAction] = useState("si"); 
   const formRef = useRef(null);
 
-  const registerEmployee = {
+  const editEmployee = {
     id: "ID Paciente:",
-    fecha: "Fecha de cita:",
-    hora: "Hora:",
-    doctor: "ID Doctor(a):"
+    dirección: "Dirección:",
+    telefono: "Teléfono:"
   };
 
   useEffect(() => {
@@ -28,20 +27,21 @@ const Forms = () => {
   return (
     <div className="overlay-box-agregar">
       <form className="form">
-        <label className="label-forms">{registerEmployee.id}</label>
-        <input type="text" />
 
-        <label className="label-forms">{registerEmployee.fecha}</label>
-        <input type="date" />
+      <label className="label-forms">{editEmployee.id}</label>
+      <input type="text"/>
 
-        <label className="label-forms">{registerEmployee.doctor}</label>
+        <label className="label-forms">{editEmployee.dirección}</label>
+        <input type="text"/>
+
+        <label className="label-forms">{editEmployee.telefono}</label>
         <input type="text"/>
 
         <div className="button-register">
-            <button type="submit">Registrar</button>
+            <button type="submit">Editar</button>
         </div>
         
-      </form> 
+      </form>
     </div>
   );
 };

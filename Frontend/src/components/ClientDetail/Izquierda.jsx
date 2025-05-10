@@ -42,6 +42,10 @@ const Izquierda = () => {
             <button className="modify-button">
               Reporte Paciente
             </button>
+
+            <button className="modify-button">
+              Facturación
+            </button>
       </div>
     </div>
   );

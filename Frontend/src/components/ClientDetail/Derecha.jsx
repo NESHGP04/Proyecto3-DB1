@@ -1,23 +1,25 @@
-
 import React from "react";
 import "../../styles/clientDetail.css";
+import { FaEdit } from 'react-icons/fa';
 
 const Derecha = () => {
 
     const employeeData = {
         name: "Angel Mendoza",
         birthDate: "11/11/1978",
-        dpi: "3614874520101",
+        num: "01",
         direccion: "zona 10",
         telefono: "56183765",
         photo: null,
         fecha: "07/05/25",
-        hora: "13:00",
+        tratamiento: "Chqueo general",
         doctor: "Dr. Alejandro Pérez"
       };
     
+    
   return (
     <div className="employee-info-container">
+
           <div className="info-row">
             <div className="info-field">
               <div className="field-label">Nombre</div>
@@ -44,26 +46,8 @@ const Derecha = () => {
 
           <div className="info-row">
             <div className="info-field">
-              <div className="field-label">DPI</div>
-              <div className="field-value golden-text">{employeeData.dpi}</div>
-            </div>
-
-            <div className="info-field">
-              <div className="field-label">Doctor Encargado</div>
-              <div className="field-value golden-text">{employeeData.doctor}</div>
-            </div>
-
-          </div>
-          
-          <div className="info-row">
-            <div className="info-field">
-              <div className="field-label">Próxima cita</div>
-              <div className="field-value golden-text">{employeeData.fecha}</div>
-            </div>
-            
-            <div className="info-field">
-              <div className="field-label">Hora</div>
-              <div className="field-value golden-text">{employeeData.hora}</div>
+              <div className="field-label">Número de Cliente</div>
+              <div className="field-value golden-text">{employeeData.num}</div>
             </div>
           </div>
     </div>

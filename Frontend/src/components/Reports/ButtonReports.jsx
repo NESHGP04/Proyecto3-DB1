@@ -21,9 +21,6 @@ const Derecha = () => {
                 <button className="report-btn">Consultas</button>
             </div>
             
-            <div className="info-field">
-                <button className="report-btn">Facturación</button>
-            </div>
           </div>
 
     </div>
