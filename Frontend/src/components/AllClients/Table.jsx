@@ -10,6 +10,8 @@ const Table = () => {
     const [users, setUsers] = useState([])
     const [search, setSearch] = useState("")
 
+    const [datas, setdatas] = useState([]);
+
     //funcion para api CAMBIAR PARA LA NUESTRA
     const URL = 'https://jsonplaceholder.typicode.com/users'
 
@@ -17,9 +19,12 @@ const Table = () => {
         const response = await fetch(URL)
         const data = await response.json()
         // console.log(data)
-        setUsers(data)
+        setUsers(data.results);
     }
-    showData()
+
+    useEffect(() => {
+        showData();
+    }, [])
 
     //EJ Pacientes
     const empleados = [
@@ -52,13 +57,15 @@ const Table = () => {
     return(
         <div className="table-container">
 
+            {JSON.stringify(datas)}
+
             <input value={search} onChange={searcher} type="text" placeholder="Buscar..." className="searchbar"/>
 
             <table className="employee-table">
                 <thead>
                     <tr>
                         <th>Foto</th>
-                        <th>DPI</th>
+                        <th>Num. Paciente</th>
                         <th>Nombre</th>
                         <th>Cita</th>
                         <th>Doctor</th>
