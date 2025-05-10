@@ -76,6 +76,7 @@ model clinica {
   pacientes  pacientes[]
   usuarios   usuarios[]
   citas      citas[]
+  medicos    medicos[]
 }
 
 model consultas {
@@ -112,6 +113,8 @@ model medicos {
   nombre            String?             @db.VarChar(100)
   especialidad      String?             @db.VarChar(100)
   telefono          String?             @db.VarChar(100)
+  id_clinica        Int // Relación con la clínica
+  clinica           clinica             @relation(fields: [id_clinica], references: [id_clinica], onDelete: NoAction, onUpdate: NoAction)
   auditoria_medicos auditoria_medicos[]
   citas             citas[]
 }
@@ -155,3 +158,6 @@ model usuarios {
   bitacora       bitacora[]
   clinica        clinica?   @relation(fields: [id_clinica], references: [id_clinica], onDelete: NoAction, onUpdate: NoAction)
 }
+
+//medico - clinica 
+//

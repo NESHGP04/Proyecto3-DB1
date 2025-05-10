@@ -110,6 +110,7 @@ CREATE TABLE "medicos" (
     "nombre" VARCHAR(100),
     "especialidad" VARCHAR(100),
     "telefono" VARCHAR(100),
+    "id_clinica" INTEGER NOT NULL,
 
     CONSTRAINT "medicos_pkey" PRIMARY KEY ("id_medico")
 );
@@ -192,6 +193,9 @@ ALTER TABLE "factura_maestro" ADD CONSTRAINT "factura_maestro_id_paciente_fkey" 
 
 -- AddForeignKey
 ALTER TABLE "factura_maestro" ADD CONSTRAINT "factura_maestro_id_cita_fkey" FOREIGN KEY ("id_cita") REFERENCES "citas"("id_cita") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "medicos" ADD CONSTRAINT "medicos_id_clinica_fkey" FOREIGN KEY ("id_clinica") REFERENCES "clinica"("id_clinica") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "pacientes" ADD CONSTRAINT "pacientes_id_clinica_fkey" FOREIGN KEY ("id_clinica") REFERENCES "clinica"("id_clinica") ON DELETE NO ACTION ON UPDATE NO ACTION;
