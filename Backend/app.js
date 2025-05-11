@@ -256,7 +256,7 @@ app.post('/consultas', async (req, res) => {
 
         res.status(201).json({
             message: 'Nueva consulta creada con éxito',
-            clinica: newConsulta
+            Consulta: newConsulta
         });
 
     } catch (error) {
@@ -324,7 +324,7 @@ app.post('/facturas', async (req, res) => {
   const { id_paciente, fecha_emision, total,id_cita, detalle } = req.body;
 
   if (!id_paciente || !fecha_emision || !total||!id_cita || !detalle || !Array.isArray(detalle) || detalle.length === 0) {
-    return res.status(400).json({ error: 'Se requieren id_paciente, fecha_emision, total y al menos un detalle' });
+    return res.status(400).json({ error: 'Se requieren id_paciente,id_cita, fecha_emision, total y al menos un detalle' });
   }
 
   // Validar existencia de pacientes
@@ -625,7 +625,7 @@ app.get('/tratamientos/:id', async (req, res) => {
 //fin Endpoints GET by ID
 //---------------------------------------------------------
 
-// Se inician los Enpoints PUT que llaman a todos un elemento especifico y modifican un campo especifico 
+// Se inician los Enpoints PUT que modifican un campo especifico de un elemento especifico
 
 // modificacion del estado y fecha de la Cita
 app.put('/citas/:id', async (req, res) => {
@@ -776,6 +776,255 @@ app.put('/clinicas/:id', async (req, res) => {
 });
 
 //fin Endpoints Put 
+//---------------------------------------------------------
+
+// Se inician los Enpoints Get COMBINADOS
+
+//Get de todos los pacientes dce una clinica
+app.get('/clinicas/:id/pacientes', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const clinicaConPacientes = await prisma.clinica.findUnique({
+      where: { id_clinica: id },
+      include: {
+        pacientes: true// se incluye el campo que se desea obtener 
+      }
+    });
+
+    if (!clinicaConPacientes) {
+      return res.status(404).json({ error: 'Clínica no encontrada' });
+    }
+
+    res.json({
+      clinica: clinicaConPacientes.nombre,
+      pacientes: clinicaConPacientes.pacientes
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los pacientes de la clínica' });
+  }
+});
+
+//Get de todos los medicos dce una clinica
+app.get('/clinicas/:id/medicos', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const clinicaConMedicos = await prisma.clinica.findUnique({
+      where: { id_clinica: id },
+      include: {
+        medicos: true// se incluye el campo que se desea obtener 
+      }
+    });
+
+    if (!clinicaConMedicos) {
+      return res.status(404).json({ error: 'Clínica no encontrada' });
+    }
+
+    res.json({
+      clinica: clinicaConMedicos.nombre,
+      medicos: clinicaConMedicos.medicos
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los medicos de la clínica' });
+  }
+});
+
+//Get de todos las citas de una clinica con su respectiva consulta
+app.get('/clinicas/:id/citas', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const clinicaConCitas = await prisma.clinica.findUnique({
+      where: { id_clinica: id },
+      include: {
+      citas: {
+          orderBy: {
+            id_cita: 'desc' // los ID más grandes primero
+          },
+          include: {
+            consultas: true
+          }
+        }
+      }
+    });
+
+    if (!clinicaConCitas) {
+      return res.status(404).json({ error: 'Clínica no encontrada' });
+    }
+
+    // Transformar cada cita para mostrar "Consulta Pendiente" si no tiene consulta
+    const citasTransformadas = clinicaConCitas.citas.map(cita => ({
+      ...cita,
+      consultas: cita.consultas.length > 0 ? cita.consultas : "Consulta Pendiente"
+    }));
+
+    res.json({
+      clinica: clinicaConCitas.nombre,
+      citas: citasTransformadas
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener las citas de la clínica' });
+  }
+});
+
+//Get de todos las facturas de un paciente 
+app.get('/pacientes/:id/facturas', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const pacientesConFacturas = await prisma.pacientes.findUnique({
+      where: { id_paciente: id },
+      include: {
+        factura_maestro: {
+          include: {
+            factura_detalle: true
+          }
+        }
+      }
+    });
+
+    if (!pacientesConFacturas) {
+      return res.status(404).json({ error: 'Paciente no encontrado' });
+    }
+
+    res.json({
+      Nombre_Paciente: pacientesConFacturas.nombre,
+      facturas: pacientesConFacturas.factura_maestro
+
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener las facturas del paciente' });
+  }
+});
+
+//Get de todos los tratamientos de un paciente 
+app.get('/pacientes/:id/tratamientos', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const paciente = await prisma.pacientes.findUnique({
+      where: { id_paciente: id },
+      include: {
+        citas: {
+          include: {
+            consultas: {
+              include: {
+                tratamiento_maestro: {
+                  include: {
+                    tratamiento_detalle: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!paciente) {
+      return res.status(404).json({ error: 'Paciente no encontrado' });
+    }
+
+    // Extraer todos los tratamientos del paciente
+    const tratamientos = paciente.citas.flatMap(cita =>
+      cita.consultas.flatMap(consulta =>
+        consulta.tratamiento_maestro ? [consulta.tratamiento_maestro] : []
+      )
+    );
+
+    res.json({
+      paciente: paciente.nombre,
+      tratamientos
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los tratamientos del paciente' });
+  }
+});
+
+//Get de todos las citas de un paciente con su respectiva consulta
+app.get('/pacientes/:id/citas', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const pacienteConCitas = await prisma.pacientes.findUnique({
+      where: { id_paciente: id },
+      include: {
+        citas: {
+          orderBy: {
+            id_cita: 'desc' // los ID más grandes primero
+          },
+          include: {
+            consultas: true
+          }
+        }
+      }
+    });
+
+    if (!pacienteConCitas) {
+      return res.status(404).json({ error: 'Paciente no encontrado' });
+    }
+
+    const citasTransformadas = pacienteConCitas.citas.map(cita => ({
+      ...cita,
+      consultas: cita.consultas.length > 0 ? cita.consultas : "Consulta Pendiente"
+    }));
+
+    res.json({
+      paciente: pacienteConCitas.nombre,
+      citas: citasTransformadas
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener las citas del paciente' });
+  }
+});
+
+
+//Get de todos las citas dce un medico
+app.get('/medicos/:id/citas', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const medicoConCitas = await prisma.medicos.findUnique({
+      where: { id_medico: id },
+      include: {
+        citas: {
+          orderBy: {
+            id_cita: 'desc'  
+          }
+        }
+      }
+    });
+
+    if (!medicoConCitas) {
+      return res.status(404).json({ error: 'Médico no encontrado' });
+    }
+
+    res.json({
+      medico: medicoConCitas.nombre,
+      citas: medicoConCitas.citas
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener las citas del médico' });
+  }
+});
+
+
+//fin Endpoints GET COMBINADOS 
 //---------------------------------------------------------
 
 // Iniciar servidor
