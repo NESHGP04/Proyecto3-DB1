@@ -91,17 +91,24 @@ app.post('/clinicas', async (req, res) => {
 
 // se hace un post para las medicos
 app.post('/medicos', async (req, res) => {
-    const { nombre, especialidad,telefono, } = req.body;
+    const { nombre, especialidad,telefono,id_clinica} = req.body;
 
-    if (!nombre || !especialidad || !telefono) {
+    if (!nombre || !especialidad || !telefono ||!id_clinica) {
         return res.status(400).json({ error: 'Son requeridos: nombre, especialidad, telefono' });
     }
+    const clinicaExistente = await isValidClinica(id_clinica);
+
+    if (!clinicaExistente) {
+    return res.status(404).json({ error: `No existe una clinica con ID ${id_clinica }` });
+  }
+
     try {
         const newMedico= await prisma.medicos.create({// se llama prisma para conectar con la db
             data: {
                 nombre,
                 especialidad, 
                 telefono,
+                id_clinica:parseInt(id_clinica),
             }
         });
    
@@ -118,13 +125,13 @@ app.post('/medicos', async (req, res) => {
 
 // se hace un post para las citas
 
-app.post('/cita', async (req, res) => {
-  const { id_medico, id_paciente, fecha } = req.body;
+app.post('/citas', async (req, res) => {
+  const { id_medico, id_paciente,id_clinica, fecha,estado } = req.body;
 
   // Validar campos requeridos
-  if (!id_medico || !id_paciente || !fecha ) {
+  if (!id_medico || !id_paciente || !fecha || !id_clinica) {
     return res.status(400).json({
-      error: 'Son requeridos: id_medico, id_paciente, fecha '
+      error: 'Son requeridos: id_medico, id_paciente, fecha, id_clinica '
     });
   }
 
@@ -134,10 +141,14 @@ app.post('/cita', async (req, res) => {
       error: 'La fecha debe estar en formato YYYY-MM-DD'
     });
   }
-// Validar existencia de pacientes y medicos
+// Validar existencia de pacientes, clionicas y medicos
   const medicoExistente = await isValidMedico(id_medico);
   const pacienteExistente = await isValidPaciente(id_paciente);
+  const clinicaExistente = await isValidClinica(id_clinica);
 
+    if (!clinicaExistente) {
+    return res.status(404).json({ error: `No existe una clinica con ID ${id_clinica }` });
+  }
     if (!medicoExistente) {
     return res.status(404).json({ error: `No existe un médico con ID ${id_medico}` });
   }
@@ -153,6 +164,8 @@ app.post('/cita', async (req, res) => {
         id_medico: parseInt(id_medico),
         id_paciente: parseInt(id_paciente),
         fecha: new Date(fecha),
+        id_clinica:parseInt(id_clinica),
+        estado:"PENDIENTE"
 
       }
     });
@@ -219,7 +232,7 @@ const clinicaExistente = await isValidClinica(id_clinica);
 // se hace un post para consultas
 
 
-app.post('/consulta', async (req, res) => {
+app.post('/consultas', async (req, res) => {
     const { id_cita, diagnostico } = req.body;
 
     if (!id_cita || !diagnostico) {
@@ -307,10 +320,10 @@ const consultaExistente = await isValidConsulta(id_consulta);
 
 // se hace un post para la factura(maestra y detalles) 
 
-app.post('/factura', async (req, res) => {
-  const { id_paciente, fecha_emision, total, detalle } = req.body;
+app.post('/facturas', async (req, res) => {
+  const { id_paciente, fecha_emision, total,id_cita, detalle } = req.body;
 
-  if (!id_paciente || !fecha_emision || !total || !detalle || !Array.isArray(detalle) || detalle.length === 0) {
+  if (!id_paciente || !fecha_emision || !total||!id_cita || !detalle || !Array.isArray(detalle) || detalle.length === 0) {
     return res.status(400).json({ error: 'Se requieren id_paciente, fecha_emision, total y al menos un detalle' });
   }
 
@@ -320,6 +333,11 @@ app.post('/factura', async (req, res) => {
   if (!pacienteExistente) {
     return res.status(404).json({ error: `No existe un paciente con ID ${id_paciente}` });
   }
+    const citaExistente = await isValidCita(id_cita);
+
+    if (!citaExistente) {
+    return res.status(404).json({ error: `No existe una cita con ID ${id_cita }` });
+  }
 
   try {
 
@@ -328,6 +346,7 @@ app.post('/factura', async (req, res) => {
         id_paciente: parseInt(id_paciente),
         fecha_emision: new Date(fecha_emision),
         total: parseFloat(total),
+        id_cita: parseInt(id_cita),
         factura_detalle: {// se meten los campos necesarios para poder crear el factura detalles
           create: detalle.map(d => ({
             descripcion: d.descripcion,
@@ -354,6 +373,258 @@ app.post('/factura', async (req, res) => {
 
 //fin Endpoints POST
 //---------------------------------------------------------
+// Se inician los Enpoints GET que llaman a todos los elementos  existentes
+
+//Se obtienen las clionicas 
+app.get('/clinicas', async (req, res) => {
+    try {
+        const clinicas = await prisma.clinica.findMany();// se llama prisma para conectar con la db
+
+        res.json(clinicas);// se devuelve como json 
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener las clinicas' });
+    }
+});
+
+//Se obtienen los medicos 
+app.get('/medicos', async (req, res) => {
+    try {
+        const medicos = await prisma.medicos.findMany();// se llama prisma para conectar con la db
+
+        res.json(medicos);// se devuelve como json 
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los medicos' });
+    }
+});
+
+//Se obtienen los pacientes 
+app.get('/pacientes', async (req, res) => {
+    try {
+        const pacientes = await prisma.pacientes.findMany();// se llama prisma para conectar con la db
+
+        res.json(pacientes);// se devuelve como json 
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los pacientes' });
+    }
+});
+
+//Se obtienen los citas 
+app.get('/citas', async (req, res) => {
+    try {
+        const citas = await prisma.citas.findMany();// se llama prisma para conectar con la db
+
+        res.json(citas);// se devuelve como json 
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener las citas' });
+    }
+});
+
+//Se obtienen las consultas 
+app.get('/consultas', async (req, res) => {
+    try {
+        const consultas = await prisma.consultas.findMany();// se llama prisma para conectar con la db
+
+        res.json(consultas);// se devuelve como json 
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener las consultas' });
+    }
+});
+
+//Se obtienen los tratamientos 
+app.get('/tratamientos', async (req, res) => {
+  try {
+    const tratamientos = await prisma.tratamiento_maestro.findMany({
+      include: {
+        tratamiento_detalle: true  // incluir todos los detalles relacionados
+      }
+    });
+
+    res.json(tratamientos); // se devuelve como json 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los tratamientos' });
+  }
+});
+
+//Se obtienen las facturas 
+app.get('/facturas', async (req, res) => {
+  try {
+    const facturas = await prisma.factura_maestro.findMany({
+      include: {
+        factura_detalle: true  // incluir todos los detalles relacionados
+      }
+    });
+
+    res.json(facturas); // se devuelve como json 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener las facturas' });
+  }
+})
+//fin Endpoints GET
+//---------------------------------------------------------
+// Se inician los Enpoints GET que llaman a todos los elementos especificos (GET by ID)
+//Se obtienen las clinicas por medio del id
+app.get('/clinicas/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+
+    try {
+        const clinica = await prisma.clinica.findUnique({//se llama prisma para conectar con la db
+            where: { id_clinica: id }// se indica que se busca por medio del id
+        });
+
+        if (!clinica) {
+            return res.status(404).json({ error: 'clinica no encontrada' });// indica que el id no se  ha encontrado
+        }
+
+        res.json(clinica);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al buscar la clinica' });
+    }
+});
+
+//Se obtienen los medicos por medio del id
+app.get('/medicos/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+
+    try {
+        const medico = await prisma.medicos.findUnique({//se llama prisma para conectar con la db
+            where: { id_medico: id }// se indica que se busca por medio del id
+        });
+
+        if (!medico) {
+            return res.status(404).json({ error: 'medico no encontrada' });// indica que el id no se  ha encontrado
+        }
+
+        res.json(medico);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al buscar el medico' });
+    }
+});
+
+//Se obtienen los pacientes por medio del id
+app.get('/pacientes/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+
+    try {
+        const paciente = await prisma.pacientes.findUnique({//se llama prisma para conectar con la db
+            where: { id_paciente: id }// se indica que se busca por medio del id
+        });
+
+        if (!paciente) {
+            return res.status(404).json({ error: 'paciente no encontrada' });// indica que el id no se  ha encontrado
+        }
+
+        res.json(paciente);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al buscar el paciente' });
+    }
+});
+
+//Se obtienen las citas por medio del id
+app.get('/citas/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+
+    try {
+        const cita = await prisma.citas.findUnique({//se llama prisma para conectar con la db
+            where: { id_cita: id }// se indica que se busca por medio del id
+        });
+
+        if (!cita) {
+            return res.status(404).json({ error: 'cita no encontrada' });// indica que el id no se  ha encontrado
+        }
+
+        res.json( cita);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al buscar la cita' });
+    }
+});
+
+//Se obtienen las consultas por medio del id
+app.get('/consultas/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+
+    try {
+        const consulta = await prisma.consultas.findUnique({//se llama prisma para conectar con la db
+            where: { id_consulta: id }// se indica que se busca por medio del id
+        });
+
+        if (!consulta) {
+            return res.status(404).json({ error: 'consulta no encontrada' });// indica que el id no se  ha encontrado
+        }
+
+        res.json( consulta);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al buscar la consulta' });
+    }
+});
+
+//Se obtienen las facturas por medio del id
+app.get('/facturas/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const factura = await prisma.factura_maestro.findUnique({
+      where: { id_factura_maestro: id },
+      include: {
+        factura_detalle: true // incluir todos los detalles relacionados
+      }
+    });
+
+    if (!factura) {
+      return res.status(404).json({ error: 'Factura no encontrada' });
+    }
+
+    res.json(factura);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al buscar la factura' });
+  }
+});
+
+//Se obtienen los tratamientos por medio del id
+app.get('/tratamientos/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const tratamiento = await prisma.tratamiento_maestro.findUnique({
+      where: { id_tratamiento_maestro: id },
+      include: {
+        tratamiento_detalle: true // incluir todos los detalles relacionados
+      }
+    });
+
+    if (!tratamiento) {
+      return res.status(404).json({ error: 'tratamiento no encontrada' });
+    }
+
+    res.json(tratamiento);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al buscar el tratamiento' });
+  }
+});
+//fin Endpoints GET by ID
+//---------------------------------------------------------
+
+
 // Iniciar servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
