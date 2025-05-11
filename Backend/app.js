@@ -474,6 +474,7 @@ app.get('/facturas', async (req, res) => {
 //fin Endpoints GET
 //---------------------------------------------------------
 // Se inician los Enpoints GET que llaman a todos los elementos especificos (GET by ID)
+
 //Se obtienen las clinicas por medio del id
 app.get('/clinicas/:id', async (req, res) => {
     const id = parseInt(req.params.id);
@@ -624,6 +625,158 @@ app.get('/tratamientos/:id', async (req, res) => {
 //fin Endpoints GET by ID
 //---------------------------------------------------------
 
+// Se inician los Enpoints PUT que llaman a todos un elemento especifico y modifican un campo especifico 
+
+// modificacion del estado y fecha de la Cita
+app.put('/citas/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  const { estado, fecha } = req.body;
+
+  const validStatus = ["PENDIENTE", "CONFIRMADA", "CANCELADA"];
+
+  if (estado && !validStatus.includes(estado)) {
+    return res.status(400).json({
+      error: 'El estado debe ser: PENDIENTE, CONFIRMADA, CANCELADA'
+    });
+  }
+
+  if (fecha && !isValidDate(fecha)) {
+    return res.status(400).json({
+      error: 'La fecha debe estar en formato YYYY-MM-DD'
+    });
+  }
+
+  try {
+    const cita = await prisma.citas.findUnique({
+      where: { id_cita: id }
+    });
+
+    if (!cita) {
+      return res.status(404).json({ error: 'Cita no encontrada' });
+    }
+
+    const dataToUpdate = {};
+    if (estado) dataToUpdate.estado = estado;
+    if (fecha) dataToUpdate.fecha = new Date(fecha);
+
+    const updatedCita = await prisma.citas.update({
+      where: { id_cita: id },
+      data: dataToUpdate
+    });
+
+    res.json({
+      message: 'Cita actualizada con éxito',
+      cita: updatedCita
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al actualizar la cita' });
+  }
+});
+
+// modificacion de la dirreccion y telefono del paciente
+app.put('/pacientes/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  const { direccion, telefono } = req.body;
+
+  try {
+    const paciente = await prisma.pacientes.findUnique({
+      where: { id_paciente: id }
+    });
+
+    if (!paciente) {
+      return res.status(404).json({ error: 'Cita no encontrada' });
+    }
+
+    const dataToUpdate = {};
+    if (direccion) dataToUpdate.direccion = direccion;
+    if (telefono) dataToUpdate.telefono = telefono;
+
+    const updatedPaciente = await prisma.pacientes.update({
+      where: { id_paciente: id },
+      data: dataToUpdate
+    });
+
+    res.json({
+      message: 'Paciente actualizada con éxito',
+      cita: updatedPaciente
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al actualizar al paciente' });
+  }
+});
+
+// modificacion de el telefono del medico
+app.put('/medicos/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  const {  telefono } = req.body;
+
+  try {
+    const medico = await prisma.medicos.findUnique({
+      where: { id_medico: id }
+    });
+
+    if (!medico) {
+      return res.status(404).json({ error: 'medico no encontrada' });
+    }
+
+    const dataToUpdate = {};
+    if (telefono) dataToUpdate.telefono = telefono;
+
+    const updatedMedico = await prisma.medicos.update({
+      where: { id_medico: id },
+      data: dataToUpdate
+    });
+
+    res.json({
+      message: 'medico actualizada con éxito',
+      cita: updatedMedico
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al actualizar al medico' });
+  }
+});
+
+// modificacion de el telefono del medico
+app.put('/clinicas/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+  const {  direccion } = req.body;
+
+  try {
+    const clinica = await prisma.clinica.findUnique({
+      where: { id_clinica: id }
+    });
+
+    if (!clinica) {
+      return res.status(404).json({ error: 'clinica no encontrada' });
+    }
+
+    const dataToUpdate = {};
+    if (direccion) dataToUpdate.direccion = direccion;
+
+    const updatedClinica = await prisma.clinica.update({
+      where: { id_clinica: id },
+      data: dataToUpdate
+    });
+
+    res.json({
+      message: 'clinica actualizada con éxito',
+      cita: updatedClinica
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al actualizar al medico' });
+  }
+});
+
+//fin Endpoints Put 
+//---------------------------------------------------------
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3001;
