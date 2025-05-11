@@ -16,7 +16,7 @@ export default function Home() {
           <img src={logo} alt="EntrApp Logo" className="logo" />
           <h1>Clinik</h1>
           <p>Seguimiento de pacientes</p>
-          <button onClick={() => navigate("/all-clients")} className="button-home">Ingresar</button>
+          <button onClick={() => navigate("/all-clinics")} className="button-home">Ingresar</button>
         </DefaultLayout>
       </div>
     </div>

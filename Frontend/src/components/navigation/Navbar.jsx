@@ -9,6 +9,7 @@ const Navbar = () => {
   return (
     <header className="main-header">
       <nav className="main-nav">
+        <div className="nav-item" onClick={() => navigate("/all-clinics")}>Listado Clinicas</div>
         <div className="nav-item" onClick={() => navigate("/all-clients")}>Listado Pacientes</div>
         <div className="nav-item" onClick={() => navigate("/reports")}>Reportes</div>
         <div className="logo-container">

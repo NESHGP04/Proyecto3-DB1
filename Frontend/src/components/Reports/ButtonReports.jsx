@@ -14,15 +14,11 @@ const Derecha = () => {
             <div className="info-field">
                 <button className="report-btn">Citas</button>
             </div>
-          </div>
-          
-          <div className="info-row">
+
             <div className="info-field">
                 <button className="report-btn">Consultas</button>
             </div>
-            
           </div>
-
     </div>
   );
 };

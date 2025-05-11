@@ -57,9 +57,7 @@ const Table = () => {
     return(
         <div className="table-container">
 
-            {JSON.stringify(datas)}
-
-            <input value={search} onChange={searcher} type="text" placeholder="Buscar..." className="searchbar"/>
+            {/* {JSON.stringify(datas)} */}
 
             <table className="employee-table">
                 <thead>

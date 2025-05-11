@@ -6,6 +6,7 @@ import ClientDetail from './routes/ClientDetail';
 import Reports from './routes/Reports';
 import AddCitas from './routes/AddCita';
 import Edit from './routes/Edit';
+import AllClinics from './routes/AllClinics';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/add-citas" element={<AddCitas />} />  
           <Route path="/reports" element={<Reports />} />  
           <Route path="/edit" element={<Edit />} />  
+          <Route path="/all-clinics" element={<AllClinics />} />  
 
           {/* Catch‑all */}
           {/* <Route path="*" element={<Navigate to="/" />} /> */}
