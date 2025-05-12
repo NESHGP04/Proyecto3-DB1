@@ -51,8 +51,12 @@ const Table = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {results.map((clinica) => (
-                    <tr key={clinica.id_clinica} className="employee-row" onClick={() => navigate("/all-clients")}>
+                {results && results.map((clinica) => (
+                    <tr 
+                        key={clinica.id_clinica}
+                        className="employee-row"
+                        onClick={() => navigate(`/all-clinics/${clinica.id_clinica}/all-clients`)}
+                    >
                         <td>{clinica.id_clinica}</td>
                         <td>{clinica.nombre}</td>
                     </tr>

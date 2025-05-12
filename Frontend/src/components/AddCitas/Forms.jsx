@@ -1,12 +1,10 @@
-// Forms para Agregar Cita
-import React, { useState, useRef, useEffect } from "react";
+//Formulario para Agregar Citas
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/addClients.css";
 
 const Forms = () => {
-  const formRef = useRef(null);
-
-  const { idPaciente, idClinica } = useParams(); // Asegúrate de pasar estos en la ruta
+  const { idPaciente, idClinica } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -25,9 +23,9 @@ const Forms = () => {
     e.preventDefault();
 
     const cita = {
-      id_medico: formData.id_medico,
-      id_paciente: idPaciente,
-      id_clinica: idClinica,
+      id_medico: parseInt(formData.id_medico),
+      id_paciente: parseInt(idPaciente),
+      id_clinica: parseInt(idClinica),
       fecha: formData.fecha,
     };
 
@@ -42,52 +40,50 @@ const Forms = () => {
 
       if (response.ok) {
         alert("Cita registrada con éxito");
-        navigate(`/clinicas/${idClinica}/pacientes`); // volver a la lista de pacientes
+        navigate(`/clinicas/${idClinica}/pacientes`);
       } else {
         alert(`Error: ${result.error}`);
       }
     } catch (error) {
       console.error("Error al registrar cita:", error);
+      alert("Error al conectar con el servidor.");
     }
   };
 
-  const registerEmployee = {
+  const labels = {
     id: "ID Paciente:",
     fecha: "Fecha de cita:",
-    hora: "Hora:",
     doctor: "ID Doctor(a):"
   };
-
-  useEffect(() => {
-    const form = formRef.current;
-    if (form) {
-      form.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (form) {
-        form.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
 
   return (
     <div className="overlay-box-agregar">
       <form className="form" onSubmit={handleSubmit}>
-        <label className="label-forms">{registerEmployee.id}</label>
-        <input type="text" value={idPaciente} disabled/>
+        <label className="label-forms">{labels.id}</label>
+        <input type="text" value={idPaciente} disabled />
 
-        <label className="label-forms">{registerEmployee.fecha}</label>
-        <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} required/>
+        <label className="label-forms">{labels.fecha}</label>
+        <input
+          type="date"
+          name="fecha"
+          value={formData.fecha}
+          onChange={handleChange}
+          required
+        />
 
-        <label className="label-forms">{registerEmployee.doctor}</label>
-        <input type="text" name="id_medico" value={formData.id_medico} onChange={handleChange} required />
+        <label className="label-forms">{labels.doctor}</label>
+        <input
+          type="number"
+          name="id_medico"
+          value={formData.id_medico}
+          onChange={handleChange}
+          required
+        />
 
         <div className="button-register">
-            <button type="submit">Registrar</button>
+          <button type="submit">Registrar</button>
         </div>
-        
-      </form> 
+      </form>
     </div>
   );
 };

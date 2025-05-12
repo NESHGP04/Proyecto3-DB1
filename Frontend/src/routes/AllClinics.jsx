@@ -13,7 +13,6 @@ function AllClinics(){
 
             {/* Tabla de empleados */}
             <Table />
-            
 
             {/* Botón agregar */}
             <Button />

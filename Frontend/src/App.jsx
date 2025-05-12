@@ -24,9 +24,10 @@ function App() {
           {/* ADD... */}
           <Route path="/all-clinics/:id_clinica/add-client" element={<AddClients />} />
           <Route path="/add-clinic" element={<AddClinica />} />  
-          <Route path="/all-clinics/:idClinica/all-clients/:idPaciente/add-citas" element={<AddCitas />} />  
+          <Route path="/client-detail/${idPaciente}/add-cita" element={<AddCitas />} />
 
-          <Route path="/edit" element={<Edit />} />  {/* EDIT */}
+          {/* EDIT */}
+          <Route path="/edit" element={<Edit />} />  
 
           {/* DETAIL */}
           <Route path="/client-detail/:id" element={<ClientDetail />} />  
@@ -34,8 +35,6 @@ function App() {
           {/* REPORTS */}
           <Route path="/reports" element={<Reports />} />  
           
-          {/* Catch‑all */}
-          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Routes>
     </BrowserRouter>
   )

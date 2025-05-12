@@ -1,4 +1,3 @@
-//Forms para Agregar Clientes
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/addClients.css";
@@ -8,7 +7,7 @@ const Forms = () => {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
-  const { id_clinica } = useParams(); //id_clinica viene en la URL como /clinica/:id_clinica
+  const { id_clinica } = useParams(); // Esto llega como string
   const navigate = useNavigate();
   const formRef = useRef(null);
 
@@ -22,12 +21,20 @@ const Forms = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const clinicaId = parseInt(id_clinica);
+
+    // Validar que id_clinica sea un número válido
+    if (isNaN(clinicaId)) {
+      alert("Error: ID de clínica no válido.");
+      return;
+    }
+
     const paciente = {
       nombre,
       fecha_nacimiento: fechaNacimiento,
       direccion,
       telefono,
-      id_clinica: parseInt(id_clinica)
+      id_clinica: clinicaId
     };
 
     try {
@@ -47,7 +54,7 @@ const Forms = () => {
       }
 
       alert("Paciente registrado con éxito");
-      navigate("/dashboard"); // Cambia la ruta 
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error al registrar paciente:", error);
       alert("Error de red al registrar paciente");
@@ -74,7 +81,7 @@ const Forms = () => {
         <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
 
         <label className="label-forms">{registerEmployee.fecha}</label>
-        <input type="date" value={fechaNacimiento}  onChange={(e) => setFechaNacimiento(e.target.value)} required />
+        <input type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} required />
 
         <label className="label-forms">{registerEmployee.dirección}</label>
         <input type="text" value={direccion} onChange={(e) => setDireccion(e.target.value)} required/>
@@ -83,9 +90,8 @@ const Forms = () => {
         <input type="text" value={telefono} onChange={(e) => setTelefono(e.target.value)} required/>
 
         <div className="button-register">
-            <button type="submit">Registrar</button>
+          <button type="submit">Registrar</button>
         </div>
-        
       </form>
     </div>
   );

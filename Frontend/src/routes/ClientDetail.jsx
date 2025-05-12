@@ -26,7 +26,7 @@ const ClientDetail = () => {
       {/* Contenido principal */}
       <div className="employee-details-content">
         {/* Columna izquierda - Foto y botones */}
-        <Izquierda />
+        <Izquierda idPaciente={id}/>
         
         {/* Columna derecha - Información del empleado */}
         <Derecha idPaciente={id}/>
@@ -36,7 +36,7 @@ const ClientDetail = () => {
 
       <div className="employee-details-content">
         {/* Columna derecha - Información del empleado */}
-        <Historial />
+        <Historial idPaciente={id}/>
       </div>
     </div>
   );

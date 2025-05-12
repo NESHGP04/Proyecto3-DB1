@@ -1,21 +1,20 @@
-//Forms para Agregar Clínica
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/addClients.css";
 
 const Forms = () => {
-  const formRef = useRef(null);
+  const navigate = useNavigate();
 
-  const [clinicaData, setClinicaData] = useState({
+  const [formData, setFormData] = useState({
     nombre: "",
-    direccion: ""
+    direccion: "",
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setClinicaData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -24,47 +23,32 @@ const Forms = () => {
     try {
       const response = await fetch("http://localhost:3001/clinicas", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(clinicaData)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error("Error al registrar la clínica");
-      }
+      const result = await response.json();
 
-      const data = await response.json();
-      alert(data.message);
-      setClinicaData({ nombre: "", direccion: "" });
-    } catch (err) {
-      console.error(err);
-      alert("Ocurrió un error al enviar el formulario");
+      if (response.ok) {
+        alert("Clínica registrada con éxito");
+        navigate("/clinicas"); // Ajusta según tu ruta de redirección
+      } else {
+        alert(`Error: ${result.error}`);
+      }
+    } catch (error) {
+      console.error("Error al registrar clínica:", error);
+      alert("Error al conectar con el servidor.");
     }
   };
-  
-
-  useEffect(() => {
-    const form = formRef.current;
-    if (form) {
-      form.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (form) {
-        form.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
 
   return (
     <div className="overlay-box-agregar">
       <form className="form" onSubmit={handleSubmit}>
-        <label className="label-forms">Nombre Clínica:</label>
+        <label className="label-forms">Nombre:</label>
         <input
           type="text"
           name="nombre"
-          value={clinicaData.nombre}
+          value={formData.nombre}
           onChange={handleChange}
           required
         />
@@ -73,14 +57,14 @@ const Forms = () => {
         <input
           type="text"
           name="direccion"
-          value={clinicaData.direccion}
+          value={formData.direccion}
           onChange={handleChange}
           required
         />
+
         <div className="button-register">
-            <button type="submit">Registrar</button>
+          <button type="submit">Registrar</button>
         </div>
-        
       </form>
     </div>
   );
