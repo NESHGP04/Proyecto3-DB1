@@ -9,47 +9,39 @@ const Table = () => {
     const [users, setUsers] = useState([])
     const [search, setSearch] = useState("")
 
-    const [datas, setdatas] = useState([]);
-
     //funcion para api CAMBIAR PARA LA NUESTRA
-    const URL = 'https://jsonplaceholder.typicode.com/users'
+    const URL = 'http://localhost:3001/clinicas'
 
     const showData = async () => {
-        const response = await fetch(URL)
-        const data = await response.json()
-        // console.log(data)
-        setUsers(data.results);
-    }
+        try {
+          const response = await fetch(URL);
+          const data = await response.json();
+          setUsers(data);
+        } catch (error) {
+          console.error("Error al obtener clínicas:", error);
+        }
+    };
 
     useEffect(() => {
         showData();
     }, [])
 
-    //EJ Pacientes
-    const clinicas = [
-            { id: '01', nombre: 'Clinik' },
-            { id: '01', nombre: 'Clinik' },
-            { id: '01', nombre: 'Clinik' },
-            { id: '01', nombre: 'Clinik' },
-            // más clinicas...
-            //cambiarlo con datos DB
-    ];
-
     // funcion busqueda
     const searcher = (e) => {
-        setSearch(e.target.value)
-        //console.log(e.target.value)
-    }
-
+        setSearch(e.target.value);
+      };
+      
     //metodo de filtrado 
-    const results = !search ? users : users.filter((dato) => dato.name.toLowerCase().includes(search.toLocaleLowerCase()))
+    const results = !search
+        ? users
+        : users.filter((c) =>
+            c.nombre.toLowerCase().includes(search.toLowerCase())
+          );
 
-    useEffect( ()=> {
-        showData() 
-    }, [])
 
     return(
         <div className="table-container">
+            <input type="text" value={search} onChange={searcher} placeholder="Buscar..." className="searchbar"/> 
 
             <table className="employee-table">
                 <thead>
@@ -59,10 +51,10 @@ const Table = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {clinicas.map((empleado) => (
-                    <tr key={empleado.id} className="employee-row" onClick={() => navigate("/all-clients")}>
-                        <td>{empleado.id}</td>
-                        <td>{empleado.nombre}</td>
+                {results.map((clinica) => (
+                    <tr key={clinica.id_clinica} className="employee-row" onClick={() => navigate("/all-clients")}>
+                        <td>{clinica.id_clinica}</td>
+                        <td>{clinica.nombre}</td>
                     </tr>
                    ))}
                 </tbody>

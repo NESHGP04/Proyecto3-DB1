@@ -6,6 +6,9 @@ const ButtonAdd = () => {
     const navigate = useNavigate();
     return(
         <div className="button-container">
+            <div className="button-agregar">
+                <button onClick={() => navigate("/add-clinic")}>Agregar Clínica</button>
+            </div>
 
             <div className="button-report">
                 <button>Reporte Clinicas</button>

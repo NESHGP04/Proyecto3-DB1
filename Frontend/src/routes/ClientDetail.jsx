@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/clientDetail.css';
 import Navbar from '../components/navigation/Navbar';
 import SubMenu1 from '../components/navigation/SubMenu1';
@@ -11,6 +11,7 @@ import EditButton from '../components/ClientDetail/EditButton'
 
 const ClientDetail = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   return (
     <div className="employee-page">
@@ -28,7 +29,7 @@ const ClientDetail = () => {
         <Izquierda />
         
         {/* Columna derecha - Información del empleado */}
-        <Derecha />
+        <Derecha idPaciente={id}/>
       </div>
 
       <SubMenu2 />

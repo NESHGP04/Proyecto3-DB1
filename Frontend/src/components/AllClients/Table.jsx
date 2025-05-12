@@ -1,63 +1,49 @@
 import React, { useState, useEffect }  from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/allClients.css";
 import foto from "../../assets/logo_azul.png";
 
 const Table = () => {
     const navigate = useNavigate();
+    const { id } = useParams(); // capturamos el id de la clínica
     
     //hooks
     const [users, setUsers] = useState([])
-    const [search, setSearch] = useState("")
+    const [search, setSearch] = useState("") 
 
-    const [datas, setdatas] = useState([]);
-
-    //funcion para api CAMBIAR PARA LA NUESTRA
-    const URL = 'https://jsonplaceholder.typicode.com/users'
+    //funcion para api
+    const URL = `http://localhost:3001/clinicas/${id}/pacientes`;
 
     const showData = async () => {
-        const response = await fetch(URL)
-        const data = await response.json()
-        // console.log(data)
-        setUsers(data.results);
-    }
+        try {
+          const response = await fetch(URL);
+          const data = await response.json();
+          setUsers(data.pacientes);
+        } catch (error) {
+          console.error("Error al obtener pacientes:", error);
+        }
+    };
 
     useEffect(() => {
         showData();
-    }, [])
-
-    //EJ Pacientes
-    const empleados = [
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            { id: '3614874320101', nombre: 'Ana López', cita: '05/05/25 13:00', doctor: 'Dr. Alejandro Pérez', imagen: foto },
-            // más pacientes...
-            //cambiarlo con datos DB
-    ];
+    }, [id])
 
     // funcion busqueda
-    const searcher = (e) => {
-        setSearch(e.target.value)
-        //console.log(e.target.value)
-    }
-
+        const searcher = (e) => {
+            setSearch(e.target.value);
+          };
+          
     //metodo de filtrado 
-    const results = !search ? users : users.filter((dato) => dato.name.toLowerCase().includes(search.toLocaleLowerCase()))
-
-    useEffect( ()=> {
-        showData() 
-    }, [])
+        const results = !search
+            ? users
+            : users.filter((c) =>
+                c.nombre.toLowerCase().includes(search.toLowerCase())
+              );
 
     return(
         <div className="table-container">
 
-            {/* {JSON.stringify(datas)} */}
+            <input value={search} onChange={searcher} type="text" placeholder="Buscar..." className="searchbar"/>
 
             <table className="employee-table">
                 <thead>
@@ -66,19 +52,17 @@ const Table = () => {
                         <th>Num. Paciente</th>
                         <th>Nombre</th>
                         <th>Cita</th>
-                        <th>Doctor</th>
                     </tr>
                 </thead>
                 <tbody>
-                {empleados.map((empleado) => (
-                    <tr key={empleado.id} className="employee-row" onClick={() => navigate("/client-detail")}>
+                {results.map((paciente) => (
+                    <tr key={paciente.id_paciente} className="employee-row" onClick={() => navigate(`/client-detail/${paciente.id_paciente}`)}>
                         <td>
-                            <img src={empleado.imagen} alt="Empleado" className="empleado-img" />
+                            <img src={foto} alt="Empleado" className="empleado-img" />
                         </td>
-                        <td>{empleado.id}</td>
-                        <td>{empleado.nombre}</td>
-                        <td>{empleado.cita}</td>
-                        <td>{empleado.doctor}</td>
+                        <td>{paciente.id_paciente}</td>
+                        <td>{paciente.nombre}</td>
+                        <td>{paciente.citas}</td>
                     </tr>
                    ))}
                 </tbody>
