@@ -13,9 +13,13 @@ RUN npm install --production
 # Copia el resto de la aplicación al contenedor
 COPY . .
 
+# Copia el esquema Prisma y genera el cliente
+RUN npx prisma generate
+
+
 # Expone el puerto 3030 (asegúrate de que coincide con la variable PORT en app.js)
 EXPOSE 3030
 
 # Comando para iniciar la aplicación
 # Cambia "src/app.js" por la ruta correcta de tu archivo principal
-CMD ["node", "src/app.js"] 
+CMD ["node", "app.js"] 

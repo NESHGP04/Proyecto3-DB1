@@ -1,8 +1,22 @@
 FROM node:18-alpine
+
 WORKDIR /app
+
+# Copia package.json y lock para instalar dependencias
 COPY package*.json ./
+
+# Instala dependencias
 RUN npm install
+
+# Copia carpeta Prisma y genera cliente
+COPY prisma ./prisma
+RUN npx prisma generate
+
+# Copia el resto del código
 COPY . .
+
+# Exponer puerto
 EXPOSE 3030
-# Cambia "src/app.js" por la ruta correcta de tu archivo principal
-CMD ["npx", "nodemon", "src/app.js"]
+
+# Comando de desarrollo (usa tu script en package.json)
+CMD ["npm", "run", "dev"]
