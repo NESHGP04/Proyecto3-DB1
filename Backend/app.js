@@ -403,10 +403,15 @@ app.get('/medicos', async (req, res) => {
 
 //Se obtienen los pacientes 
 app.get('/pacientes', async (req, res) => {
+    const { id_clinica } = req.query;
     try {
-        const pacientes = await prisma.pacientes.findMany();// se llama prisma para conectar con la db
+      const pacientes = await prisma.pacientes.findMany({
+        where: {
+          id_clinica: parseInt(id_clinica),
+        }
+      }); // se llama prisma para conectar con la db
 
-        res.json(pacientes);// se devuelve como json 
+      return res.status(200).json({ pacientes });// se devuelve como json 
 
     } catch (error) {
         console.error(error);
@@ -733,7 +738,7 @@ app.put('/medicos/:id', async (req, res) => {
 
     res.json({
       message: 'medico actualizada con éxito',
-      cita: updatedMedico
+      cita: updatedMedico 
     });
 
   } catch (error) {

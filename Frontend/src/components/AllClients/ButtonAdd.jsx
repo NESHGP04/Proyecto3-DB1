@@ -1,11 +1,10 @@
-//Botones para Todos los Pacientes
 import React from "react";
 import "../../styles/allClients.css";
 import { useNavigate, useParams } from "react-router-dom";
 
 const ButtonAdd = () => {
     const navigate = useNavigate();
-    const { id } = useParams(); // capturamos el id de la clínica
+    const { id} = useParams(); // Asegúrate que en la ruta esté definido como `:id_clinica`
 
     const URL = `http://localhost:3001/clinicas/${id}/pacientes`;
 
@@ -19,7 +18,6 @@ const ButtonAdd = () => {
                 return;
             }
 
-            // Crear CSV
             const encabezado = ["ID Paciente", "Nombre", "Cita"];
             const filas = pacientes.map(p => [p.id_paciente, p.nombre, p.citas]);
 
@@ -30,7 +28,6 @@ const ButtonAdd = () => {
             const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
             const url = URL.createObjectURL(blob);
 
-            // Crear enlace de descarga
             const link = document.createElement("a");
             link.setAttribute("href", url);
             link.setAttribute("download", "reporte_pacientes.csv");
@@ -44,10 +41,12 @@ const ButtonAdd = () => {
         }
     };
 
-    return(
+    return (
         <div className="button-container">
             <div className="button-agregar">
-                <button onClick={() => navigate("/add-clients")}>Agregar Paciente</button>
+            <button onClick={() => navigate(`/all-clinics/${id}/all-clients/add-client`)}>
+            Agregar Paciente
+            </button>
             </div>
 
             <div className="button-report">
@@ -55,6 +54,6 @@ const ButtonAdd = () => {
             </div>
         </div>
     );
-}
+};
 
 export default ButtonAdd;

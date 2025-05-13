@@ -22,7 +22,10 @@ function App() {
           <Route path="/all-clinics" element={<AllClinics />} />  
 
           {/* ADD... */}
-          <Route path="/all-clinics/:id_clinica/add-client" element={<AddClients />} />
+          <Route
+            path="/all-clinics/:id/all-clients/add-client"
+            element={<AddClients />}
+          />
           <Route path="/add-clinic" element={<AddClinica />} />  
           <Route path="/client-detail/${idPaciente}/add-cita" element={<AddCitas />} />
 

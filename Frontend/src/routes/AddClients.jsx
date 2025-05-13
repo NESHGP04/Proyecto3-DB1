@@ -1,6 +1,5 @@
 import '../styles/addClients.css';
 import '../styles/allClients.css';
-import logo from "../assets/logo.png";
 import Navbar from '../components/navigation/Navbar';
 import Forms from '../components/AddClients/Forms';
 

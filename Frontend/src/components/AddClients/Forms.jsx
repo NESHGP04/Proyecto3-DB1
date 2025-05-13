@@ -1,3 +1,4 @@
+// Forms para agregar Pacientes
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/addClients.css";
@@ -7,7 +8,8 @@ const Forms = () => {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
-  const { id_clinica } = useParams(); // Esto llega como string
+
+  const { id } = useParams(); // <- viene como 'id' desde la ruta
   const navigate = useNavigate();
   const formRef = useRef(null);
 
@@ -21,9 +23,8 @@ const Forms = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const clinicaId = parseInt(id_clinica);
+    const clinicaId = parseInt(id);
 
-    // Validar que id_clinica sea un número válido
     if (isNaN(clinicaId)) {
       alert("Error: ID de clínica no válido.");
       return;
@@ -54,14 +55,16 @@ const Forms = () => {
       }
 
       alert("Paciente registrado con éxito");
-      navigate("/dashboard");
+      navigate(`/all-clinics/${id}/all-clients`);
     } catch (error) {
       console.error("Error al registrar paciente:", error);
       alert("Error de red al registrar paciente");
     }
   };
 
+  // Este useEffect parece estar incompleto (¿falta handleScroll?)
   useEffect(() => {
+    const handleScroll = () => {};
     const form = formRef.current;
     if (form) {
       form.addEventListener("scroll", handleScroll);
