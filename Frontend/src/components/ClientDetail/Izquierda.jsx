@@ -85,10 +85,6 @@ const Izquierda = ({idPaciente}) => {
             >
               Agregar Cita
             </button>
-
-            <button className="modify-button">
-              Facturación
-            </button>
       </div>
     </div>
   );

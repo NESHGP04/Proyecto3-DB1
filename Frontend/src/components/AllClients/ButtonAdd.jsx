@@ -48,10 +48,6 @@ const ButtonAdd = () => {
             Agregar Paciente
             </button>
             </div>
-
-            {/* <div className="button-report">
-                <button onClick={generarReportePacientes}>Reporte Pacientes</button>
-            </div> */}
         </div>
     );
 };
