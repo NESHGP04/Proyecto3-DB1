@@ -131,10 +131,6 @@ const Derecha = () => {
             <div className="info-field">
               <button className="report-btn" onClick={generarReporteMedicos}>Médicos</button>
             </div>
-            
-            <div className="info-field">
-                <button className="report-btn" onClick={generarReporteCitas}>Citas</button>
-            </div>
 
             <div className="info-field">
                 <button className="report-btn" onClick={generarReporteConsultas}>Consultas</button>

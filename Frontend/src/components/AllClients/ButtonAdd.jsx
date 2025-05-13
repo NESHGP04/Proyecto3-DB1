@@ -49,9 +49,9 @@ const ButtonAdd = () => {
             </button>
             </div>
 
-            <div className="button-report">
+            {/* <div className="button-report">
                 <button onClick={generarReportePacientes}>Reporte Pacientes</button>
-            </div>
+            </div> */}
         </div>
     );
 };
