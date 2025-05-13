@@ -55,7 +55,10 @@ const Table = () => {
                     <tr 
                         key={clinica.id_clinica}
                         className="employee-row"
-                        onClick={() => navigate(`/all-clinics/${clinica.id_clinica}/all-clients`)}
+                        onClick={() => {
+                            localStorage.setItem("idClinica", clinica.id_clinica);
+                            navigate(`/all-clinics/${clinica.id_clinica}/all-clients`);
+                        }}
                     >
                         <td>{clinica.id_clinica}</td>
                         <td>{clinica.nombre}</td>

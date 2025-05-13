@@ -10,38 +10,56 @@ const Izquierda = ({idPaciente}) => {
 
   const generarReportePaciente = async () => {
     try {
-        const response = await fetch(URL);
-        const pacientes = await response.json();
-
-        if (!pacientes || pacientes.length === 0) {
-            alert("No hay paciente para exportar.");
-            return;
-        }
-
-        // Crear CSV
-        const encabezado = ["ID Paciente", "Nombre","Fecha de Nacimiento", "Dirección", "Teléfono", "Clínica", "Doctor", "Cita", "Tratamiento"]; //Doctor y tratamiento no encontrados
-        const filas = pacientes.map(p => [p.id_paciente, p.nombre, p.fecha_nacimiento, p.direccion, p.telefono, p.id_clinica, p.citas]);
-
-        const csvContent = [encabezado, ...filas]
-            .map(row => row.join(","))
-            .join("\n");
-
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-
-        // Crear enlace de descarga
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", "reporte_paciente.csv");
-        link.style.visibility = "hidden";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      const response = await fetch(URL);
+      const paciente = await response.json();
+  
+      if (!paciente || Object.keys(paciente).length === 0) {
+        alert("No hay paciente para exportar.");
+        return;
+      }
+  
+      // Encabezados del CSV
+      const encabezado = [
+        "ID Paciente",
+        "Nombre",
+        "Fecha de Nacimiento",
+        "Dirección",
+        "Teléfono",
+        "Clínica"
+        // Puedes añadir más campos aquí si tienes doctor, citas, tratamiento, etc.
+      ];
+  
+      // Crear fila con los datos del paciente
+      const fila = [
+        paciente.id_paciente,
+        paciente.nombre,
+        paciente.fecha_nacimiento,
+        paciente.direccion,
+        paciente.telefono,
+        paciente.id_clinica
+        // Aquí también podrías incluir info como paciente.doctor.nombre, etc. si tu endpoint lo devuelve.
+      ];
+  
+      const csvContent = [encabezado, fila]
+        .map(row => row.join(","))
+        .join("\n");
+  
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+  
+      // Crear enlace de descarga
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `reporte_paciente_${paciente.id_paciente}.csv`);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
-        console.error("Error al generar reporte:", error);
-        alert("Error al generar el reporte.");
+      console.error("Error al generar reporte:", error);
+      alert("Error al generar el reporte.");
     }
-  };
+  };  
 
   const employeeData = {
     photo: null

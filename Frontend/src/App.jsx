@@ -19,6 +19,8 @@ function App() {
 
           {/* ALL... */}
           <Route path="/all-clinics/:id/all-clients" element={<AllClients />} />
+          <Route path="/all-clients" element={<AllClients />} />
+
           <Route path="/all-clinics" element={<AllClinics />} />  
 
           {/* ADD... */}

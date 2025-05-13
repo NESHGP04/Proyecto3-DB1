@@ -403,21 +403,41 @@ app.get('/medicos', async (req, res) => {
 
 //Se obtienen los pacientes 
 app.get('/pacientes', async (req, res) => {
-    const { id_clinica } = req.query;
-    try {
-      const pacientes = await prisma.pacientes.findMany({
-        where: {
-          id_clinica: parseInt(id_clinica),
-        }
-      }); // se llama prisma para conectar con la db
+  const { id_pacientes } = req.query;
+  try {
+    const pacientes = await prisma.pacientes.findMany({
+      where: {
+        id_pacientes: parseInt(id_pacientes),
+      }
+    }); // se llama prisma para conectar con la db
 
-      return res.status(200).json({ pacientes });// se devuelve como json 
+    return res.status(200).json({ pacientes });// se devuelve como json 
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error al obtener los pacientes' });
-    }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error al obtener los pacientes' });
+  }
 });
+
+//Se obtienen los pacientes SOLO
+// app.get('/pacientes', async (req, res) => {
+//   const { id_clinica } = req.query;
+
+//   try {
+//     const whereClause = id_clinica ? { id_clinica: parseInt(id_clinica) } : {};
+
+//     const pacientes = await prisma.pacientes.findMany({
+//       where: whereClause,
+//       include: { citas: true } // opcional: incluir relaciones
+//     });
+
+//     return res.status(200).json({ pacientes });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Error al obtener los pacientes' });
+//   }
+// });
+
 
 //Se obtienen los citas 
 app.get('/citas', async (req, res) => {

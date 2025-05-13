@@ -1,3 +1,4 @@
+//Tabla para mostrar Todos los Clientes
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/allClients.css";
@@ -11,7 +12,11 @@ const Table = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const URL = `http://localhost:3001/clinicas/${id}/pacientes`;
+  const BASE_URL = `http://localhost:3001/clinicas/${id}/pacientes`;
+  
+  const URL = id
+    ? `http://localhost:3001/clinicas/${id}/pacientes`
+    : `http://localhost:3001/pacientes`;
 
   const showData = async () => {
     try {
