@@ -27,7 +27,7 @@ function App() {
             element={<AddClients />}
           />
           <Route path="/add-clinic" element={<AddClinica />} />  
-          <Route path="/client-detail/${idPaciente}/add-cita" element={<AddCitas />} />
+          <Route path="/client-detail/:idPaciente/add-cita" element={<AddCitas />} />
 
           {/* EDIT */}
           <Route path="/edit" element={<Edit />} />  
