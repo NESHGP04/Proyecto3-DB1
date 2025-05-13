@@ -182,50 +182,21 @@ app.post('/citas', async (req, res) => {
 });
 
 // se hace un post para los pacientes
-app.post('/pacientes', async (req, res) => {
-  const { nombre, fecha_nacimiento, direccion, telefono, id_clinica } = req.body;
+app.get('/pacientes', async (req, res) => {
+  const { id_clinica } = req.query;
 
-  // Validar campos requeridos
-  if (!nombre || !fecha_nacimiento || !direccion || !telefono || !id_clinica) {
-    return res.status(400).json({
-      error: 'Son requeridos: nombre, fecha_nacimiento, direccion, telefono, id_clinica'
-    });
-  }
-
-  // Validar formato de fecha
-  if (!isValidDate(fecha_nacimiento)) {
-    return res.status(400).json({
-      error: 'La fecha debe estar en formato YYYY-MM-DD'
-    });
-  }
-
-  const clinicaExistente = await isValidClinica(id_clinica);
-
-  if (!clinicaExistente) {
-    return res.status(404).json({ error: `No existe una clinica con ID ${id_clinica}` });
-  }
+  console.log("id_clinica recibido:", id_clinica);
 
   try {
+    const where = id_clinica ? { id_clinica: parseInt(id_clinica) } : {};
+    console.log("Consulta WHERE:", where);
 
-    // Crear paciente
-    const newPaciente = await prisma.pacientes.create({
-      data: {
-        nombre,
-        fecha_nacimiento: new Date(fecha_nacimiento),
-        direccion,
-        telefono,
-        id_clinica: parseInt(id_clinica),
-      }
-    });
+    const pacientes = await prisma.pacientes.findMany({ where });
 
-    return res.status(201).json({
-      message: 'Nuevo paciente creado con éxito',
-      paciente: newPaciente
-    });
-
+    return res.status(200).json({ pacientes });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Error al crear el paciente' });
+    console.error("Error real en /pacientes:", error);
+    res.status(500).json({ error: 'Error al obtener los pacientes' });
   }
 });
 
@@ -402,41 +373,41 @@ app.get('/medicos', async (req, res) => {
 });
 
 //Se obtienen los pacientes 
-app.get('/pacientes', async (req, res) => {
-  const { id_pacientes } = req.query;
-  try {
-    const pacientes = await prisma.pacientes.findMany({
-      where: {
-        id_pacientes: parseInt(id_pacientes),
-      }
-    }); // se llama prisma para conectar con la db
+// app.get('/pacientes', async (req, res) => {
+//   const { id_pacientes } = req.query;
+//   try {
+//     const pacientes = await prisma.pacientes.findMany({
+//       where: {
+//         id_pacientes: parseInt(id_pacientes),
+//       }
+//     }); // se llama prisma para conectar con la db
 
-    return res.status(200).json({ pacientes });// se devuelve como json 
+//     return res.status(200).json({ pacientes });// se devuelve como json 
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error al obtener los pacientes' });
-    }
-});
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Error al obtener los pacientes' });
+//     }
+// });
 
 //Se obtienen los pacientes SOLO
-// app.get('/pacientes', async (req, res) => {
-//   const { id_clinica } = req.query;
+app.get('/pacientes', async (req, res) => {
+  const { id_clinica } = req.query;
+  console.log("Recibiendo id_clinica:", id_clinica);
 
-//   try {
-//     const whereClause = id_clinica ? { id_clinica: parseInt(id_clinica) } : {};
+  try {
+    console.log("Consulta con where:", id_clinica ? { id_clinica: parseInt(id_clinica) } : {});
 
-//     const pacientes = await prisma.pacientes.findMany({
-//       where: whereClause,
-//       include: { citas: true } // opcional: incluir relaciones
-//     });
+    const pacientes = await prisma.pacientes.findMany({
+      where: id_clinica ? { id_clinica: parseInt(id_clinica) } : {}
+    });
 
-//     return res.status(200).json({ pacientes });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Error al obtener los pacientes' });
-//   }
-// });
+    return res.status(200).json({ pacientes });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener los pacientes' });
+  }
+});
 
 
 //Se obtienen los citas 
