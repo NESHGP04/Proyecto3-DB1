@@ -1,13 +1,23 @@
+# Proyecto3-DB1 (Frontend)
+Para poder correr el Fontend es necesario tener docker, primero se tiene qe ejecutar el siguiente comando:
+   ```bash
+-f docker-compose.yml -f docker-compose.dev.yml build
+```
+Y luegp es necesario ejecutar este otro comando:
+   ```bash
+-f docker-compose.yml -f docker-compose.dev.yml up
+```
+Con estos dos comandos (y levantar el backend) el programa está listo para funcionar
 # Proyecto3-DB1 (Backend)
 
 API REST construida con Node.js, Express y Prisma (PostgreSQL).  
-Este proyecto se ejecuta de forma local (sin Docker) usando `node app.js` o `npm run dev`.
+Este proyecto se ejecuta de forma local (sin Docker) usando `node app.js` .
 
 ## 📋 Requisitos
 
 - Node.js v18 o superior  
 - PostgreSQL v15 o superior (corriendo en `localhost:5432`)  
-- Yarn o npm (gestor de paquetes)
+- Prisma
 
 ## 🔧 Instalación
 
@@ -26,14 +36,10 @@ Este proyecto se ejecuta de forma local (sin Docker) usando `node app.js` o `npm
    ```bash
    cp .env.example .env
    ```
-   Edita `.env` y ajusta tus credenciales:
+   Crea un `.env` y ajusta tus credenciales:
    ```env
-   POSTGRES_USER=postgres
-   POSTGRES_PASSWORD=roc23501
-   POSTGRES_DB=Clinica
 
-   DATABASE_URL="postgresql://postgres:roc23501@localhost:5432/Clinica"
-   PORT=3001
+   DATABASE_URL="postgresql://postgres:contraseña@localhost:5432/nombredelaDB"
    ```
 
 ## 🗄️ Configuración de la Base de Datos
@@ -54,20 +60,13 @@ Este proyecto se ejecuta de forma local (sin Docker) usando `node app.js` o `npm
   ```bash
   npx prisma migrate deploy
   ```
-- (Opcional en desarrollo) Borrar y recrear todo + poblar datos:
-  ```bash
-  npx prisma migrate reset --force
-  npm run seed
-  ```
+
 
 El seed se ejecuta con el script `prisma/seed.js` y carga datos de ejemplo.
 
 ## ▶️ Ejecutar la API
 
-- En modo desarrollo (watch + reinicio automático):
-  ```bash
-  npm run dev
-  ```
+
 - En modo producción:
   ```bash
   npm start
